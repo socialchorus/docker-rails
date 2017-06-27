@@ -27,3 +27,5 @@ FROM ruby:2.3.1-alpine
   RUN     chmod +x /usr/bin/cc-test-reporter
 
   RUN     rm -rf /var/cache/* /tmp/*
+
+  EXPOSE 3000
