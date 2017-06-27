@@ -1,29 +1,24 @@
-FROM ruby:2.3.1-alpine
+FROM ruby:2.3.1
 
   # Update package repositories
-  RUN     apk update
+  RUN     apt-get update && apt-get install -y \
+            build-essential \
 
   # Add build libaries (mainly used for native extension gems)
-  RUN     apk add --no-cache build-base
-  RUN     apk add --no-cache postgresql-dev
+            libpq-dev \
 
   # Add 3rd party dependencies
-  RUN     apk add --no-cache nodejs
-  RUN     apk add --no-cache git
-  RUN     apk add --no-cache bash
-  RUN     apk add --no-cache imagemagick
-  RUN     apk add --no-cache curl
-  RUN     apk add --no-cache tar gzip
+            nodejs npm imagemagick
+
+  # Create symlink for nodejs, otherwise phantomjs will fail to build
+  RUN     ln -s /usr/bin/nodejs /usr/bin/node
+
   # These are all needed for jasmine tests :/
   # RUN     apk add --no-cache dbus firefox-esr fontconfig python ttf-freefont xvfb
 
-  RUN     mkdir -p /usr/share && \
-            cd /usr/share \
-            && curl -L https://github.com/Overbryd/docker-phantomjs-alpine/releases/download/2.11/phantomjs-alpine-x86_64.tar.bz2 | tar xj \
-            && ln -s /usr/share/phantomjs/phantomjs /usr/bin/phantomjs \
-            && phantomjs --version
+  RUN     npm install -g phantomjs-prebuilt
 
-  RUN     curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /usr/bin/cc-test-reporter
+  RUN     curl -sL https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /usr/bin/cc-test-reporter
   RUN     chmod +x /usr/bin/cc-test-reporter
 
   RUN     rm -rf /var/cache/* /tmp/*
