@@ -18,9 +18,6 @@ FROM ruby:2.3.1
 
   RUN     npm install -g phantomjs-prebuilt
 
-  RUN     curl -sL https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > /usr/bin/cc-test-reporter
-  RUN     chmod +x /usr/bin/cc-test-reporter
-
   RUN     rm -rf /var/cache/* /tmp/*
 
   EXPOSE 3000
