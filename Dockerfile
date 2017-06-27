@@ -19,5 +19,3 @@ FROM ruby:2.3.1
   RUN     npm install -g phantomjs-prebuilt
 
   RUN     rm -rf /var/cache/* /tmp/*
-
-  EXPOSE 3000
